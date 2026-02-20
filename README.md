@@ -1,2 +1,3 @@
-# lv-s26-wan-code
+# Code Vorlesung Web-Anwendungen
+im Sommersemester 2026
 
