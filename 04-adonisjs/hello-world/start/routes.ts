@@ -11,20 +11,14 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/home').as('home')
 
-router
-  .group(() => {
-    router.get('signup', [controllers.NewAccount, 'create'])
-    router.post('signup', [controllers.NewAccount, 'store'])
+router.get('/', async ({ view })=>{
+    return view.render('pages/home', {name: 'Horsti', 
+      tag: 'Donnerstag', 
+      freunde: ['Tara', 'Klausi', 'Susi', 'Manni'],
+      anzeigeFreunde:false})
+})
 
-    router.get('login', [controllers.Session, 'create'])
-    router.post('login', [controllers.Session, 'store'])
-  })
-  .use(middleware.guest())
-
-router
-  .group(() => {
-    router.post('logout', [controllers.Session, 'destroy'])
-  })
-  .use(middleware.auth())
+router.get('/data', async (ctx)=>{
+  return ctx
+})
