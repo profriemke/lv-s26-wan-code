@@ -10,8 +10,49 @@
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
+import db from '@adonisjs/lucid/services/db'
+
 
 let count = 0
+
+let votes = {
+  spitze: 0,
+  geht: 0,
+  weg: 0
+}
+
+router.get('/vote', async ({ view })=>{
+    return view.render('pages/vote')
+})
+router.post('/vote', async ({ view, request })=>{
+  const vote = request.input('vote')
+  if(vote == 'spitze'){
+    votes.spitze++
+  }
+  if(vote == 'geht'){
+    votes.geht++
+  }
+  if(vote == 'weg'){
+    votes.weg++
+  }
+  console.log(votes)
+  return view.render('pages/vote_danke')
+
+})
+
+router.get('/kunden', async ({ view })=>{
+
+  const kunden = await db.from('kunde')
+                         .select('*')
+                         .where({ ort: 'Stuttgart', anrede: 'Frau'})
+                         .limit(10)
+  return view.render('pages/kunden', { kunden: kunden})                   
+})
+
+router.get('/hello', async ({ view })=>{
+  return view.render('pages/hello')
+})
+
 
 router.get('/', async ({ view })=>{
     return view.render('pages/home', {name: 'Horsti', 
