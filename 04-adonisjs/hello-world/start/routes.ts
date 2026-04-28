@@ -21,9 +21,14 @@ let votes = {
   weg: 0
 }
 
+router.get('/vote/result', async ({ view })=>{
+   return view.render('pages/vote_result', { result: votes})
+})
+
 router.get('/vote', async ({ view })=>{
     return view.render('pages/vote')
 })
+
 router.post('/vote', async ({ view, request })=>{
   const vote = request.input('vote')
   if(vote == 'spitze'){
@@ -46,7 +51,8 @@ router.get('/kunden', async ({ view })=>{
                          .select('*')
                          .where({ ort: 'Stuttgart', anrede: 'Frau'})
                          .limit(10)
-  return view.render('pages/kunden', { kunden: kunden})                   
+  return view.render('pages/kunden', { kunden: kunden})   
+             
 })
 
 router.get('/hello', async ({ view })=>{
