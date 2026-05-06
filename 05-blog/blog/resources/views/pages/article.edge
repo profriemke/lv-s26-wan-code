@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ post.title }} - Mein Blog</title>
+    <title>Mein Blog</title>
 </head>
 <body>
-    <h1>{{ post.title }}</h1>
-    <p>
-        {{ post.text }}
-    </p>
-    <p>
-        {{ new Date(post.date).toLocaleDateString() }}/{{ post.author }}
-        <br>
-        <a href="/">zur Homepage</a>
-    </p>
+    @if(post == undefined)
+        <h1>Artikel nicht gefunden</h1>
+        <p>
+            Es konnte kein Artikel gefunden werden.
+            <br>
+            <a href="/">zur Homepage</a>
+        </p>
+    @else
+        <h1>{{ post.title }}</h1>
+        <p>
+            {{ post.text }}
+        </p>
+        <p>
+            {{ new Date(post.date).toLocaleDateString() }}/{{ post.author }}
+            <br>
+            <a href="/">zur Homepage</a>
+        </p>
+    @end
 </body>
 </html>

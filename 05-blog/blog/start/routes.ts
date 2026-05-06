@@ -17,6 +17,7 @@ router.get('/', async ({ view })=>{
   const posts = await db.from('posts')
                         .select ('*')
 
+ console.log(posts) 
   return view.render('pages/home', { posts: posts})
 })
 
@@ -59,4 +60,30 @@ router.post('/post/create', async ({ request, response })=>{
                           })
   console.log(result)
   return response.redirect('/')
+})
+
+router.get('/data', async (ctx) => {
+  return ctx
+})
+
+
+router.get('/a', async ({ session }) => {
+  session.put('text', 'Riemke war da')
+  return 'Wert gesetzt';
+});
+
+router.get('/b', async ({ session }) => {
+  return session.get('text');
+});
+
+router.get('/counter', async ({ view, session }) => {
+  console.log(session.get('count'))
+  if(session.get('count') == undefined) {
+      // Sonderfall: count noch nicht vorhanden 
+    session.put('count', 1); 
+  }else{
+      // count erhöhen 
+    session.put('count', session.get('count')+1)
+  }
+  return view.render('welcome',{count: session.get('count')})
 })

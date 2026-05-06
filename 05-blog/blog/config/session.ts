@@ -15,7 +15,7 @@ const sessionConfig = defineConfig({
   /**
    * The name of the cookie used to store the session ID.
    */
-  cookieName: 'adonis-session',
+  cookieName: 'riemkes-cookie',
 
   /**
    * When set to true, the session id cookie will be deleted
