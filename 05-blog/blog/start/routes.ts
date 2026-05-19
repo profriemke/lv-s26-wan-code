@@ -13,11 +13,69 @@ import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 import hash from '@adonisjs/core/services/hash'
 
+router.get('/about', async ({ view})=>{
+ return view.render('pages/about')
+})
+
+router.post('/post/update', async ({ request, response }) => {
+  const id = request.input('id')
+  const title = request.input('title')
+  const teaser = request.input('teaser')
+  const text = request.input('text')
+
+  const result = await db.from('posts')
+    .update({
+      title: title,
+      text: text,
+      teaser: teaser,
+       date: new Date().toDateString()
+    })
+    .where({
+      id: id
+    })
+  return response.redirect('/article/' + id)
+
+})
+
+router.get('/post/edit/:id', async ({ params, view }) => {
+
+  const post = await db.from('posts')
+    .select('*')
+    .where({
+      id: params.id
+    })
+    .first()
+  return view.render('pages/edit', { post: post })
+
+})
+
+router.get('/register', async ({ view }) => {
+  return view.render('pages/register')
+})
+
+router.post('/register', async ({ response, request }) => {
+  const firstname = request.input('firstname')
+  const lastname = request.input('lastname')
+  const login = request.input('login')
+  const password = request.input('password')
+
+  const result = await db.table('users')
+    .insert({
+      firstname: firstname,
+      lastname: lastname,
+      password: await hash.make(password),
+      login: login,
+     
+    })
+  return response.redirect('/login')
+})
+
+
 router.get('/login', ({ view }) => {
   return view.render('pages/login')
 })
 
-router.get('/logout', async ({ session, response })=>{
+router.get('/logout', async ({ session, response }) => {
   session.forget('login')
   session.forget('firstname')
   session.forget('lastname')

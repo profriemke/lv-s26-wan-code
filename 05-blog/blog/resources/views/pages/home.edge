@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-
+@include('partials/html-header')
 <body>
+  @include('partials/menu')
+
   <h1>Mein Blog</h1>
   @if(session.get('login')!= undefined)
   Hallo {{ session.get('firstname') }}!
@@ -17,7 +11,7 @@
     <a href="/logout">Logout</a>
   </p>
   @else
-  <a href="/login">zum Login</a>
+  <a href="/login">zum Login</a> <a href="/register">registrieren</a>
   @end
 
   @each(post in posts)
@@ -30,6 +24,7 @@
   </p>
   </p>
   @end
+  @include('partials/footer')
 </body>
 
 </html>

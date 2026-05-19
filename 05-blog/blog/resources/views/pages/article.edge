@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Blog</title>
-</head>
+@include('partials/html-header')
 <body>
     @if(post == undefined)
         <h1>Artikel nicht gefunden</h1>
@@ -22,6 +16,9 @@
             {{ new Date(post.date).toLocaleDateString() }}/{{ post.author }}
             <br>
             <a href="/">zur Homepage</a>
+            @if(session.get('login') != undefined)
+                <a href="/post/edit/{{post.id}}">Post bearbeiten</a>
+            @end
         </p>
     @end
 </body>
