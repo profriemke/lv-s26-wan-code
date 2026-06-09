@@ -6,32 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        #mydiv {
+
+
+        #aussen {
+            border: 2px solid black;
+            display: flow-root;
+        }
+
+        #box1 {
             width: 100px;
             height: 100px;
             background-color: red;
+            float: left;
         }
 
-        #mydiv:hover {
-            width: 200px;
+        #box2 {
+            width: 100px;
+            height: 100px;
             background-color: green;
-        }
-        a:link{
-            color:cadetblue
-        }
-        a:visited{
-            color:darkslateblue
-        }
-        .geld::after{
-            content: "€";
+            float: left;
         }
     </style>
 </head>
 
 <body>
-    <div id="mydiv"></div>
-<a href="https://www.hdm-stuttgart.de/">HdM</a><br>
-<span class="geld">35</span>
+    <div id="aussen">
+        <div id="box1"></div>
+        <div id="box2"></div>
+    </div>
 </body>
 
 </html>

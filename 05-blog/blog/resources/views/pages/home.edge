@@ -1,8 +1,12 @@
 @include('partials/html-header')
+
 <body>
   @include('partials/menu')
 
   <h1>Mein Blog</h1>
+  <span class="material-symbols-outlined">
+    swipe_vertical
+  </span>
   @if(session.get('login')!= undefined)
   Hallo {{ session.get('firstname') }}!
   <p>
