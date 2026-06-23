@@ -9,6 +9,11 @@
         </p>
     @else
         <h1>{{ post.title }}</h1>
+        <p> 
+            @if(post.key)
+            <img src="/uploads/{{post.key}}" alt="{ post.title }}">
+            @end
+        </p>
         <p>
             {{ post.text }}
         </p>

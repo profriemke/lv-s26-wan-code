@@ -12,30 +12,20 @@ import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 import hash from '@adonisjs/core/services/hash'
+import string from '@adonisjs/core/helpers/string'
+import drive from '@adonisjs/drive/services/main'
+import UsersController from '#controllers/users_controller'
+const PostsController = () => import('#controllers/posts_controller')
 
-router.get('/about', async ({ view})=>{
- return view.render('pages/about')
+router.get('/', [PostsController, 'home'])
+router.post('/post/update', [PostsController, 'update'])
+router.get('/register', [UsersController, 'registerForm'])
+router.post('/register', [UsersController, 'register'])
+
+router.get('/about', async ({ view }) => {
+  return view.render('pages/about')
 })
 
-router.post('/post/update', async ({ request, response }) => {
-  const id = request.input('id')
-  const title = request.input('title')
-  const teaser = request.input('teaser')
-  const text = request.input('text')
-
-  const result = await db.from('posts')
-    .update({
-      title: title,
-      text: text,
-      teaser: teaser,
-       date: new Date().toDateString()
-    })
-    .where({
-      id: id
-    })
-  return response.redirect('/article/' + id)
-
-})
 
 router.get('/post/edit/:id', async ({ params, view }) => {
 
@@ -49,26 +39,9 @@ router.get('/post/edit/:id', async ({ params, view }) => {
 
 })
 
-router.get('/register', async ({ view }) => {
-  return view.render('pages/register')
-})
 
-router.post('/register', async ({ response, request }) => {
-  const firstname = request.input('firstname')
-  const lastname = request.input('lastname')
-  const login = request.input('login')
-  const password = request.input('password')
 
-  const result = await db.table('users')
-    .insert({
-      firstname: firstname,
-      lastname: lastname,
-      password: await hash.make(password),
-      login: login,
-     
-    })
-  return response.redirect('/login')
-})
+
 
 
 router.get('/login', ({ view }) => {
@@ -109,13 +82,7 @@ router.post('/login', async ({ request, response, session }) => {
 })
 
 
-router.get('/', async ({ view }) => {
-  const posts = await db.from('posts')
-    .select('*')
 
-  console.log(posts)
-  return view.render('pages/home', { posts: posts })
-})
 
 // Dynamische Route für Post-Detailansicht
 
@@ -132,6 +99,7 @@ router.get('/article/:id', async ({ view, params }) => {
 
 // Neue Posts
 
+
 router.get('/post/create', async ({ view, session, response }) => {
   if (session.get('login') == undefined) {
     return response.redirect('/login')
@@ -143,10 +111,22 @@ router.post('/post/create', async ({ request, response, session }) => {
   if (session.get('login') == undefined) {
     return response.redirect('/login')
   }
+  let key = null
   const title = request.input('title')
   const teaser = request.input('teaser')
   const text = request.input('text')
 
+  const image = request.file('image',
+    { size: '5mb', extnames: ['jpg', 'png'] })
+  if (image && !image.isValid) {
+    console.log(image.errors)
+    // hier z.B. eine "Fehler"-View ausgeben oder Flash-Message
+  }
+  if(image){
+    key = `${string.uuid()}.${image.extname}`
+    await image.moveToDisk(key, 'fs')
+    console.log('Bild hochgeladen',await drive.use('fs').getUrl(key))
+  }
   if (!title || !teaser || !text) {
     return response.redirect('/post/create')
   }
@@ -158,9 +138,11 @@ router.post('/post/create', async ({ request, response, session }) => {
         teaser: teaser,
         text: text,
         author: session.get('login'),
-        date: new Date().toDateString()
+        date: new Date().toDateString(),
+        key: key
       })
   console.log(result)
+  
   return response.redirect('/')
 })
 
