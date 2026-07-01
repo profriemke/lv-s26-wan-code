@@ -22,6 +22,11 @@ router.post('/post/update', [PostsController, 'update'])
 router.get('/register', [UsersController, 'registerForm'])
 router.post('/register', [UsersController, 'register'])
 
+router.get('/api/posts', async()=>{
+  const posts = await db.from('posts').select('*')
+  return JSON.stringify(posts)
+})
+
 router.get('/about', async ({ view }) => {
   return view.render('pages/about')
 })
@@ -38,10 +43,6 @@ router.get('/post/edit/:id', async ({ params, view }) => {
   return view.render('pages/edit', { post: post })
 
 })
-
-
-
-
 
 
 router.get('/login', ({ view }) => {
@@ -118,6 +119,7 @@ router.post('/post/create', async ({ request, response, session }) => {
 
   const image = request.file('image',
     { size: '5mb', extnames: ['jpg', 'png'] })
+    
   if (image && !image.isValid) {
     console.log(image.errors)
     // hier z.B. eine "Fehler"-View ausgeben oder Flash-Message

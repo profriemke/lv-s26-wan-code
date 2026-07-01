@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-4.0.0.js"></script>
+    <style>
+        h1{
+            color: blue;
+        }
+        img{
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>jQuery Test</h1>
+    <img src="8.jpg" width="300">
+    <button onclick="$('h1').hide()">ausblenden</button>
+    <button onclick="$('h1').show()">einblenden</button>
+    <button onclick="$('h1').toggle()">toggle</button>
+    <button onclick="change()">rot</button>
+    <button onclick="$('h1').css('backgroundColor', 'green')">Hintergrund</button>
+    <button onclick="$('h1').html('ist weg')">Text</button>
+    <button onclick="colorToggle()">Farbe toggeln</button>
+    <button onclick="alert($('h1').html())">auslesen</button>
+    <button onclick="$('img').attr('src','9.jpg')">Bildertausch</button>
+    <button onclick="$('img').css('left', '300px')">verschieben</button>
+  
+<script>
+    let colorState = "blue"
+
+    function change(){
+            $('h1').css('color', 'red')
+    }
+    function colorToggle(){
+        if(colorState == 'blue'){
+             $('h1').css('color', 'red')
+             colorState= 'red'
+        }else{
+             $('h1').css('color', 'blue')
+             colorState = 'blue'
+        }
+
+    }
+</script>
+
+</body>
+
+</html>

@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 
 export default class PostsController {
+   
     public async home({ view }: HttpContext) {
         const posts = await db.from('posts')
             .select('*')
@@ -9,6 +10,7 @@ export default class PostsController {
         console.log(posts)
         return view.render('pages/home', { posts: posts })
     }
+    
     public async update({ request, response }: HttpContext) {
         const id = request.input('id')
         const title = request.input('title')
